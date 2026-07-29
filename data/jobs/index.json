@@ -1,0 +1,16 @@
+[
+  {
+    "id": "92cd8597-4ee1-4b04-b943-ccb772e9818f",
+    "number": "UK-260729-698",
+    "created": "2026-07-29T03:21:20-04:00",
+    "status": "New",
+    "customer": "Test Customer",
+    "address": "123 Main St",
+    "phone": "",
+    "scope": [],
+    "materials": [],
+    "labor": [],
+    "photos": [],
+    "notes": ""
+  }
+]

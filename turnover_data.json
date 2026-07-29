@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1785312719376",
+    "number": "UK-20260729-641",
+    "created": "2026-07-29T08:11:59.377Z",
+    "status": "New",
+    "customer": "Test Customer",
+    "address": "123 Main St",
+    "phone": "",
+    "scope": [],
+    "materials": [
+      {
+        "name": "Paint",
+        "cost": 125,
+        "vendor": "Home Depot",
+        "sku": "PAINT-001"
+      }
+    ],
+    "labor": [
+      {
+        "description": "Install trim",
+        "hours": 3,
+        "rate": 75
+      }
+    ],
+    "photos": [],
+    "notes": ""
+  },
+  {
+    "id": "1785366941063",
+    "number": "UK-20260729-49",
+    "created": "2026-07-29T23:15:41.065Z",
+    "status": "New",
+    "customer": "james",
+    "address": "New Job",
+    "phone": "",
+    "scope": [],
+    "materials": [],
+    "labor": [],
+    "photos": [],
+    "notes": ""
+  }
+]

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Underkutters Inc | Pro Toolkit</title>
+    <style>
+        :root {
+            --primary: #f59e0b; /* Safety Amber */
+            --bg-dark: #0f172a; /* Deep Slate */
+            --bg-panel: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+        
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { margin: 0; padding: 0; background: var(--bg-dark); color: var(--text-main); padding-bottom: 70px; }
+
+        /* Typography & Header */
+        header { 
+            background: #0b1120; padding: 1rem; text-align: center; 
+            border-bottom: 2px solid var(--primary); 
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        header h1 { margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); }
+        .sync-status { font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 4px; background: var(--success); color: #fff; }
+        
+        /* Layout */
+        .container { padding: 1rem; max-width: 1000px; margin: auto; }
+        .view-section { display: none; animation: fadeIn 0.3s ease-in; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards */
+        .card { background: var(--bg-panel); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card h2 { margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; color: var(--text-main); }
+        
+        /* Dashboard Stats */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .stat-box { background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; text-align: center; border-left: 4px solid var(--primary); border: 1px solid var(--border); }
+        .stat-box h3 { margin: 0 0 0.5rem 0; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-box .value { font-size: 1.8rem; font-weight: bold; }
+        .progress-track { width: 100%; height: 8px; background: var(--bg-dark); border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: 0.4s ease; }
+
+        /* Tables & Forms */
+        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+        th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { color: var(--text-muted); text-transform: uppercase; font-size: 0.75rem; }
+        input[type="text"], input[type="number"] { 
+            width: 100%; padding: 0.5rem; background: var(--bg-dark); 
+            border: 1px solid var(--border); color: white; border-radius: 4px; 
+        }
+        
+        /* Buttons */
+        button { background: var(--primary); color: #000; border: none; padding: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; transition: background 0.2s; }
+        button:active { filter: brightness(0.9); }
+        .btn-full { width: 100%; margin-top: 0.5rem; }
+        .btn-danger { background: var(--danger); color: white; padding: 0.4rem; font-size: 0.8rem; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        
+        /* Checklists */
+        .check-item { display: flex; align-items: center; padding: 1rem; background: var(--bg-dark); margin-bottom: 0.5rem; border-radius: 6px; border: 1px solid var(--border); }
+        .check-item input[type="checkbox"] { margin-right: 1rem; width: 24px; height: 24px; accent-color: var(--primary); }
+        .check-item label { flex: 1; font-size: 0.95rem; line-height: 1.4; }
+
+        /* Camera / Photos */
+        .photo-area { border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 8px; cursor: pointer; margin-bottom: 1rem; background: var(--bg-dark); }
+        .photo-area:hover { border-color: var(--primary); }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.5rem; }
+        .photo-preview { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+
+        /* Mobile Bottom Nav */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: #0b1120; display: flex; justify-content: space-around; 
+            padding: 0.5rem 0; border-top: 1px solid var(--border); z-index: 100;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; 
+            color: var(--text-muted); cursor: pointer; font-size: 0.75rem; padding: 0.5rem;
+        }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+        .nav-icon { font-size: 1.2rem; margin-bottom: 3px; }
+
+        /* Print Formatting (For exporting to PDF) */
+        @media print {
+            body { background: white; color: black; padding: 0; }
+            .bottom-nav, .photo-area, button, .sync-status { display: none !important; }
+            .view-section { display: block !important; margin-bottom: 2rem; }
+            .card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+            input, .check-item { border: 1px solid #ccc; color: black; background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Underkutters Inc.</h1>
+    <div class="sync-status" id="sync-indicator">🟢 Synced</div>
+</header>
+
+<div class="container">
+    
+    <!-- VIEW: DASHBOARD -->
+    <div id="view-dash" class="view-section active">
+        <div class="stats-grid">
+            <div class="stat-box" style="border-left-color: var(--primary);">
+                <h3>Total Est. Cost</h3>
+                <div class="value" id="dash-total">$0.00</div>
+            </div>
+            <div class="stat-box" style="border-left-color: var(--success);">
+                <h3>Turnover Ready</h3>
+                <div class="value" id="dash-score">0%</div>
+                <div class="progress-track"><div class="progress-fill" id="dash-progress"></div></div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Quick Actions</h2>
+            <button class="btn-full" onclick="saveData()">💾 Force Cloud Save</button>
+            <button class="btn-full btn-outline" onclick="window.print()">🖨️ Export to PDF</button>
+            <button class="btn-full btn-outline" onclick="exportCSV()">📊 Export Scope to CSV</button>
+        </div>
+    </div>
+
+    <!-- VIEW: ESTIMATOR (SCOPE OF WORK) -->
+    <div id="view-scope" class="view-section">
+        <div class="card">
+            <h2>Labor & Materials Scope</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task Details</th>
+                            <th style="width: 70px;">Mat ($)</th>
+                            <th style="width: 70px;">Lab ($)</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="estimator-body"></tbody>
+                </table>
+            </div>
+            <button class="btn-full" onclick="addEstimatorRow()">+ Add Task</button>
+        </div>
+    </div>
+
+    <!-- VIEW: MATERIALS -->
+    <div id="view-materials" class="view-section">
+        <div class="card">
+            <h2>Purchasing Run List</h2>
+            <div id="materials-list"></div>
+        </div>
+    </div>
+
+    <!-- VIEW: WALKTHROUGH -->
+    <div id="view-walk" class="view-section">
+        <div class="card">
+            <h2>Final Rent-Ready QC</h2>
+            <div id="walkthrough-list"></div>
+        </div>
+    </div>
+
+    <!-- VIEW: CAMERA / PHOTOS -->
+    <div id="view-camera" class="view-section">
+        <div class="card">
+            <h2>Site Documentation</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Snap photos directly from your device. (Previews stored locally).</p>
+            
+            <label class="photo-area">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+                Tap to Open Camera
+                <input type="file" accept="image/*" capture="environment" multiple style="display: none;" id="cam-input" onchange="handlePhotos(event)">
+            </label>
+
+            <div class="photo-grid" id="photo-gallery"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('dash', this)">
+        <span class="nav-icon">📊</span><span>Dash</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('scope', this)">
+        <span class="nav-icon">🛠️</span><span>Scope</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('materials', this)">
+        <span class="nav-icon">🛒</span><span>Parts</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('walk', this)">
+        <span class="nav-icon">✅</span><span>QC</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('camera', this)">
+        <span class="nav-icon">📸</span><span>Logs</span>
+    </div>
+</div>
+
+<script>
+    // --- STATE MANAGEMENT ---
+    let appData = { 
+        estimator: [], 
+        materials: { paint: false, hardware: false, plumbing: false, electrical: false, drywall: false },
+        walkthrough: { kitchen: false, bathroom: false, hvac: false, doors: false, clean: false }
+    };
+
+    const matLabels = { paint: "Paint & Sundries", hardware: "Hardware/Locks", plumbing: "Plumbing Parts", electrical: "Fixtures/Bulbs", drywall: "Drywall & Mud" };
+    const walkLabels = { kitchen: "Kitchen appliances sanitized & tested", bathroom: "Plumbing leak-checked & caulked", hvac: "HVAC filter replaced & running", doors: "Locks re-keyed, doors latch", clean: "Deep clean & carpets extracted" };
+
+    // --- INITIALIZATION ---
+    window.onload = async () => {
+        loadLocalFallback(); // Load from browser storage immediately
+        try {
+            const res = await fetch('/api/data');
+            if(res.ok) {
+                appData = await res.json();
+                document.getElementById('sync-indicator').innerText = "🟢 Server Synced";
+                saveLocalFallback();
+            }
+        } catch (e) {
+            document.getElementById('sync-indicator').innerText = "🟠 Offline (Local)";
+        }
+        
+        renderAll();
+    };
+
+    // --- UI RENDERING ---
+    function renderAll() {
+        renderEstimator();
+        renderChecklists('materials-list', appData.materials, matLabels, 'materials');
+        renderChecklists('walkthrough-list', appData.walkthrough, walkLabels, 'walkthrough');
+        updateDashboard();
+    }
+
+    function renderEstimator() {
+        const tbody = document.getElementById('estimator-body');
+        tbody.innerHTML = '';
+        appData.estimator.forEach((item, i) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><input type="text" placeholder="Task name" value="${item.task || ''}" oninput="updateEst(${i}, 'task', this.value)"></td>
+                    <td><input type="number" value="${item.mat || 0}" oninput="updateEst(${i}, 'mat', this.value)"></td>
+                    <td><input type="number" value="${item.lab || 0}" oninput="updateEst(${i}, 'lab', this.value)"></td>
+                    <td><button class="btn-danger" onclick="removeEst(${i})">X</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function renderChecklists(containerId, dataObj, labels, category) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        for (let key in dataObj) {
+            container.innerHTML += `
+                <div class="check-item" onclick="toggleCheck('${category}', '${key}')">
+                    <input type="checkbox" ${dataObj[key] ? 'checked' : ''} style="pointer-events: none;">
+                    <label>${labels[key]}</label>
+                </div>
+            `;
+        }
+    }
+
+    // --- LOGIC & UPDATES ---
+    function addEstimatorRow() { appData.estimator.push({ task: '', mat: 0, lab: 0 }); renderEstimator(); }
+    function removeEst(i) { appData.estimator.splice(i, 1); renderAll(); }
+    function updateEst(i, field, val) { 
+        appData.estimator[i][field] = field === 'task' ? val : (parseFloat(val) || 0); 
+        updateDashboard(); 
+        saveLocalFallback();
+    }
+    
+    function toggleCheck(category, key) {
+        appData[category][key] = !appData[category][key];
+        renderAll();
+        saveLocalFallback();
+    }
+
+    function updateDashboard() {
+        // Costs
+        let total = appData.estimator.reduce((sum, item) => sum + Number(item.mat) + Number(item.lab), 0);
+        document.getElementById('dash-total').innerText = '$' + total.toFixed(2);
+
+        // Readiness Score (Materials + Walkthrough)
+        let totalChecks = Object.keys(appData.materials).length + Object.keys(appData.walkthrough).length;
+        let checked = 0;
+        for(let k in appData.materials) if(appData.materials[k]) checked++;
+        for(let k in appData.walkthrough) if(appData.walkthrough[k]) checked++;
+        
+        let pct = totalChecks === 0 ? 0 : Math.round((checked / totalChecks) * 100);
+        document.getElementById('dash-score').innerText = pct + '%';
+        document.getElementById('dash-progress').style.width = pct + '%';
+    }
+
+    // --- HARDWARE CAMERA INTEGRATION ---
+    function handlePhotos(event) {
+        const gallery = document.getElementById('photo-gallery');
+        const files = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+            const url = URL.createObjectURL(files[i]);
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'photo-preview';
+            gallery.appendChild(img);
+        }
+    }
+
+    // --- NAVIGATION ---
+    function switchTab(tabId, el) {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        
+        document.getElementById('view-' + tabId).classList.add('active');
+        el.classList.add('active');
+    }
+
+    // --- DATA SYNC & EXPORT ---
+    function saveLocalFallback() {
+        localStorage.setItem('underkutters_data', JSON.stringify(appData));
+    }
+    
+    function loadLocalFallback() {
+        const local = localStorage.getItem('underkutters_data');
+        if(local) appData = JSON.parse(local);
+    }
+
+    async function saveData() {
+        document.getElementById('sync-indicator').innerText = "⏳ Syncing...";
+        try {
+            const res = await fetch('/api/data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(appData)
+            });
+            if(res.ok) {
+                document.getElementById('sync-indicator').innerText = "🟢 Synced";
+                alert("Saved to Node Server!");
+            }
+        } catch(e) {
+            document.getElementById('sync-indicator').innerText = "🟠 Saved Locally";
+            alert("Server offline. Data secured locally on device.");
+        }
+    }
+
+    function exportCSV() {
+        let csv = "Task,Material Cost,Labor Cost,Total\n";
+        appData.estimator.forEach(item => {
+            let lineTotal = Number(item.mat) + Number(item.lab);
+            csv += `"${item.task}",${item.mat},${item.lab},${lineTotal}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Underkutters_Scope.csv';
+        a.click();
+    }
+</script>
+
+</body>
+</html>
+

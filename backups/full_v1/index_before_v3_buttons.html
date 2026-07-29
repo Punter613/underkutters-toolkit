@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Underkutters Pro</title>
+
+<link rel="stylesheet" href="/css/pro.css">
+
+</head>
+
+<body>
+
+
+<header>
+
+<h1>
+🔥 UNDERKUTTERS PRO
+</h1>
+
+<div id="status">
+🟢 Online
+</div>
+
+</header>
+
+
+
+<main>
+
+
+<section class="stats">
+
+
+<div class="card">
+<h3>ACTIVE JOBS</h3>
+<h2 id="active-jobs">0</h2>
+</div>
+
+
+<div class="card">
+<h3>REVENUE</h3>
+<h2 id="revenue">$0</h2>
+</div>
+
+
+<div class="card">
+<h3>MATERIALS</h3>
+<h2 id="materials">$0</h2>
+</div>
+
+
+<div class="card">
+<h3>COMPLETION</h3>
+<h2 id="completion">0%</h2>
+</div>
+
+
+</section>
+
+
+
+<section class="panel">
+
+<h2>⚡ Quick Actions</h2>
+
+
+<button onclick="createJob()">
+➕ CREATE NEW JOB
+</button>
+
+
+<button onclick="window.location='/uploads'">
+📸 ADD PHOTOS
+</button>
+
+
+<button onclick="generateReport()">
+📄 GENERATE REPORT
+</button>
+
+
+</section>
+
+
+
+
+<section class="panel">
+
+
+<h2>
+Recent Jobs
+</h2>
+
+
+<div id="job-list">
+
+Loading...
+
+</div>
+
+
+</section>
+
+
+
+</main>
+
+
+
+
+<script src="/js/modules/api.js"></script>
+<script src="/js/dashboard.js"></script>
+
+
+</body>
+</html>

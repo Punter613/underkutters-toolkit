@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Underkutters Pro</title>
+
+<link rel="stylesheet" href="/css/pro.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="brand">
+🔥 UNDERKUTTERS PRO
+</div>
+
+<div id="online">
+🟢 Online
+</div>
+
+</header>
+
+
+
+<div class="card">
+
+<h2>Dashboard</h2>
+
+<section class="dashboard-grid">
+
+<div class="stat-card">
+<div class="stat-title">ACTIVE JOBS</div>
+<h2 id="active-jobs">0</h2>
+</div>
+
+
+<div class="stat-card">
+<div class="stat-title">REVENUE</div>
+<h2 id="revenue">$0.00</h2>
+</div>
+
+
+<div class="stat-card">
+<div class="stat-title">MATERIALS</div>
+<h2 id="materials">$0.00</h2>
+</div>
+
+
+<div class="stat-card">
+<div class="stat-title">COMPLETION</div>
+<h2 id="completion">0%</h2>
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>Recent Jobs</h2>
+
+<div id="job-list">
+Loading jobs...
+</div>
+
+</section>
+
+<button onclick="newJob()">
+➕ CREATE NEW JOB
+</button>
+
+
+<br><br>
+
+
+<button>
+📸 ADD PHOTOS
+</button>
+
+
+<br><br>
+
+
+<button>
+📄 GENERATE REPORT
+</button>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Recent Jobs</h2>
+
+
+<div id="jobs">
+
+Loading jobs...
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="/js/modules/api.js"></script>
+<script src="/js/modules/jobs.js"></script>
+<script src="/js/modules/ui.js"></script>
+<script src="/js/dashboard.js"></script>
+
+
+<script>
+
+
+async function start(){
+
+try{
+
+await loadDashboard();
+
+}
+
+catch(e){
+
+document.getElementById("online").innerHTML=
+"🔴 Server Error";
+
+}
+
+}
+
+
+
+function newJob(){
+
+let customer =
+prompt("Customer Name");
+
+
+if(!customer)return;
+
+
+
+let address =
+prompt("Job Address");
+
+
+
+API.createJob({
+
+customer,
+address
+
+})
+.then(()=>{
+
+loadDashboard();
+
+});
+
+
+}
+
+
+
+start();
+
+
+</script>
+<script src="/js/modules/api.js"></script>
+<script src="/js/dashboard.js"></script>
+
+</body>
+
+</html>

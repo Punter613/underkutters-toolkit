@@ -1,0 +1,26 @@
+{
+  "estimator": [
+    {
+      "task": "Paint Living Room",
+      "cost": 150,
+      "status": "Pending",
+      "mat": 2500,
+      "lab": 2000
+    },
+    {
+      "task": "Roof ",
+      "cost": 2500,
+      "mat": 1500,
+      "lab": 2000
+    }
+  ],
+  "checklist": {
+    "kitchen": false,
+    "bathroom": false,
+    "hvac": false,
+    "doors": true,
+    "matPaint": true,
+    "matHdw": false,
+    "matPlumb": true
+  }
+}
