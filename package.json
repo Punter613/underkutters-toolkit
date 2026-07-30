@@ -1,15 +1,15 @@
 {
   "name": "underkutters-toolkit",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Underkutters Pro Contractor Toolkit",
+  "main": "server.js",
   "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "author": "Underkutters LLC",
+  "license": "MIT",
   "dependencies": {
     "archiver": "^8.0.0",
     "dayjs": "^1.11.21",
