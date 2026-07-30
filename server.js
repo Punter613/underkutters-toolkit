@@ -21,7 +21,7 @@ const photoRoutes=require("./routes/photos");
 const reportRoutes=require("./routes/reports");
 const jobDetailRoutes=require("./routes/job-detail");
 const estimateRoutes=require("./routes/estimate");
-
+const profitRoutes=require("./routes/profit");
 
 app.use("/api/estimate",estimateRoutes);
 app.use("/api/job",jobDetailRoutes);
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use('/api/job-tools',jobTools);
 app.use("/api/materials", materialRoutes);
 app.use("/api/invoice", invoiceRoutes);
-
+app.use("/api/profit",profitRoutes);
 
 app.use("/api/dashboard-final",dashboardFinal);
 app.use("/api/invoice-final",invoiceFinal);
