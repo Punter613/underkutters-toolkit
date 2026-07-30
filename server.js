@@ -76,6 +76,17 @@ app.post('/api/data', (req, res) => {
     res.json({ success: true });
 });
 
+
+app.get("/health", (req,res)=>{
+    res.json({
+        status:"ok",
+        service:"Underkutters Toolkit",
+        version:"1.0.0",
+        uptime:process.uptime(),
+        timestamp:new Date().toISOString()
+    });
+});
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {
